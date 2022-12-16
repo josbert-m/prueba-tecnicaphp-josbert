@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * A simple script for app key generation
+ */
+$key = base64_encode(random_bytes(32));
+$raw = file_exists(__DIR__ . '/.env') ? file_get_contents(__DIR__ . '/.env') 
+    : (file_exists(__DIR__ . '/.env.example') 
+    ? file_get_contents(__DIR__ . '/.env.example') : 'APP_KEY= ');
+
+
+$newEnvFile = preg_replace("/APP_KEY=.*\s/m", "APP_KEY={$key}\n", $raw);
+
+file_put_contents(__DIR__ . '/.env', $newEnvFile);
